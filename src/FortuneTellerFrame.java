@@ -10,7 +10,8 @@ public class FortuneTellerFrame extends JFrame {
 
     ArrayList<String> fortunes = new ArrayList<>();
     Random generator = new Random();
-    int[] repeat = new int[10];
+
+    ArrayList<Integer> repeat  = new ArrayList<>();
     JTextArea textArea = new JTextArea(3,10);
     JScrollPane scrollPane = new JScrollPane(textArea);
 
@@ -100,12 +101,18 @@ public class FortuneTellerFrame extends JFrame {
         button.setFont(new Font("Monospaced", Font.PLAIN, 18));
         button.setSize(20,20);
         button.addActionListener(e -> {
-            int index;
-            do {
-                index = generator.nextInt(fortunes.size());
-            } while (index == repeat[1]); // keep picking until it’s different
 
-            repeat[1] = index; // store for next time
+
+            int index;
+            if (!repeat.isEmpty()) {
+                do {
+                    index = generator.nextInt(fortunes.size());
+                } while (index == repeat.getLast()); // keep picking until it’s different
+            } else{
+                index = generator.nextInt(fortunes.size());
+            }
+
+            repeat.add(index); // store for next time
             textArea.append(fortunes.get(index) + "\n");
         });
 
